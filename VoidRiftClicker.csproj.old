@@ -1,0 +1,24 @@
+<Project Sdk="Godot.NET.Sdk/4.2.0">
+  <PropertyGroup>
+    <!-- Target .NET 6 which is required for Godot 4.x -->
+    <TargetFramework>net6.0</TargetFramework>
+
+    <!-- Enable nullable reference types for safer code -->
+    <Nullable>enable</Nullable>
+
+    <!-- Allow unsafe code for potential performance optimizations -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+    <!-- Project information -->
+    <RootNamespace>VoidRiftClicker</RootNamespace>
+    <AssemblyName>VoidRiftClicker</AssemblyName>
+
+    <!-- Enable implicit usings for cleaner code -->
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Newtonsoft.Json for save file serialization -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+</Project>

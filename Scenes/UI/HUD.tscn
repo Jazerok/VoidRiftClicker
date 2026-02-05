@@ -1,0 +1,97 @@
+[gd_scene load_steps=2 format=3 uid="uid://hud_scene"]
+
+[ext_resource type="Script" path="res://Scripts/UI/HUD.gd" id="1_hud"]
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hud")
+
+[node name="TopBar" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 80.0
+grow_horizontal = 2
+
+[node name="HBox" type="HBoxContainer" parent="TopBar"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="EnergyContainer" type="VBoxContainer" parent="TopBar/HBox"]
+layout_mode = 2
+
+[node name="EnergyTitle" type="Label" parent="TopBar/HBox/EnergyContainer"]
+layout_mode = 2
+text = "VOID ENERGY"
+horizontal_alignment = 1
+
+[node name="VoidEnergyLabel" type="Label" parent="TopBar/HBox/EnergyContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "0"
+horizontal_alignment = 1
+
+[node name="IncomeContainer" type="VBoxContainer" parent="TopBar/HBox"]
+layout_mode = 2
+
+[node name="IncomeTitle" type="Label" parent="TopBar/HBox/IncomeContainer"]
+layout_mode = 2
+text = "INCOME"
+horizontal_alignment = 1
+
+[node name="PassiveIncomeLabel" type="Label" parent="TopBar/HBox/IncomeContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "+0/sec"
+horizontal_alignment = 1
+
+[node name="ClickContainer" type="VBoxContainer" parent="TopBar/HBox"]
+layout_mode = 2
+
+[node name="ClickTitle" type="Label" parent="TopBar/HBox/ClickContainer"]
+layout_mode = 2
+text = "CLICK POWER"
+horizontal_alignment = 1
+
+[node name="ClickPowerLabel" type="Label" parent="TopBar/HBox/ClickContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "+1/click"
+horizontal_alignment = 1
+
+[node name="CPSLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -150.0
+offset_top = 90.0
+offset_right = -10.0
+offset_bottom = 120.0
+grow_horizontal = 0
+text = "CPS: 0/14"
+horizontal_alignment = 2
+
+[node name="FrenzyIndicator" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 90.0
+offset_right = 100.0
+offset_bottom = 130.0
+grow_horizontal = 2
+
+[node name="FrenzyLabel" type="Label" parent="FrenzyIndicator"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 24
+text = "FRENZY x2!"
+horizontal_alignment = 1

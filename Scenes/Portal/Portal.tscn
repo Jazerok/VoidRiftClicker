@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=3 uid="uid://portal_scene"]
+
+[ext_resource type="Script" path="res://Scripts/UI/PortalController.gd" id="1_portal"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_portal"]
+radius = 150.0
+
+[node name="Portal" type="Node2D"]
+script = ExtResource("1_portal")
+
+[node name="PortalSprite" type="Sprite2D" parent="."]
+modulate = Color(0.6, 0.4, 0.9, 1)
+scale = Vector2(2, 2)
+
+[node name="OuterRing" type="Sprite2D" parent="."]
+modulate = Color(0.4, 0.3, 0.7, 0.8)
+scale = Vector2(2.5, 2.5)
+
+[node name="InnerGlow" type="Sprite2D" parent="."]
+modulate = Color(0.8, 0.6, 1, 0.5)
+scale = Vector2(1.5, 1.5)
+
+[node name="ClickArea" type="Area2D" parent="."]
+input_pickable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClickArea"]
+shape = SubResource("CircleShape2D_portal")
+
+[node name="ClickParticles" type="GpuParticles2D" parent="."]
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 0.9
+lifetime = 0.5
+
+[node name="AmbientParticles" type="GpuParticles2D" parent="."]
+amount = 30
+lifetime = 2.0
+
+[node name="FrenzyParticles" type="GpuParticles2D" parent="."]
+emitting = false
+amount = 50
+lifetime = 1.0
+
+[node name="GlowLight" type="PointLight2D" parent="."]
+color = Color(0.6, 0.4, 0.9, 1)
+energy = 1.5
+texture_scale = 3.0

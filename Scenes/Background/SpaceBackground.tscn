@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=3 uid="uid://space_background_scene"]
+
+[sub_resource type="GDScript" id="bg_script"]
+script/source = "extends ParallaxBackground
+
+# SpaceBackground.gd - Animated parallax space background
+# Creates a sense of depth with multiple scrolling layers
+
+@export var scroll_speed: float = 10.0
+@export var auto_scroll: bool = true
+
+func _process(delta):
+	if auto_scroll:
+		# Slowly scroll the background for ambient movement
+		scroll_offset.x -= scroll_speed * delta
+		scroll_offset.y -= scroll_speed * 0.5 * delta
+"
+
+[node name="SpaceBackground" type="ParallaxBackground"]
+script = SubResource("bg_script")
+
+[node name="FarStars" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.1, 0.1)
+motion_mirroring = Vector2(1920, 1080)
+
+[node name="ColorRect" type="ColorRect" parent="FarStars"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.05, 0.02, 0.1, 1)
+
+[node name="MidStars" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.3, 0.3)
+motion_mirroring = Vector2(1920, 1080)
+
+[node name="NearStars" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.6, 0.6)
+motion_mirroring = Vector2(1920, 1080)
+
+[node name="Nebula" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.2, 0.2)
+motion_mirroring = Vector2(1920, 1080)
+
+[node name="ColorRect" type="ColorRect" parent="Nebula"]
+modulate = Color(0.4, 0.2, 0.6, 0.2)
+offset_left = 400.0
+offset_top = 200.0
+offset_right = 800.0
+offset_bottom = 600.0

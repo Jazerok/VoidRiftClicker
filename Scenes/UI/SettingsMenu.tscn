@@ -1,0 +1,116 @@
+[gd_scene load_steps=1 format=3 uid="uid://settings_menu_scene"]
+
+[node name="SettingsMenu" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Title" type="Label" parent="VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBox"]
+layout_mode = 2
+
+[node name="AudioSection" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="AudioLabel" type="Label" parent="VBox/AudioSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Audio"
+
+[node name="MusicContainer" type="HBoxContainer" parent="VBox/AudioSection"]
+layout_mode = 2
+
+[node name="MusicLabel" type="Label" parent="VBox/AudioSection/MusicContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Music Volume"
+
+[node name="MusicSlider" type="HSlider" parent="VBox/AudioSection/MusicContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+value = 70.0
+
+[node name="SFXContainer" type="HBoxContainer" parent="VBox/AudioSection"]
+layout_mode = 2
+
+[node name="SFXLabel" type="Label" parent="VBox/AudioSection/SFXContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "SFX Volume"
+
+[node name="SFXSlider" type="HSlider" parent="VBox/AudioSection/SFXContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+value = 100.0
+
+[node name="HSeparator2" type="HSeparator" parent="VBox"]
+layout_mode = 2
+
+[node name="DisplaySection" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="DisplayLabel" type="Label" parent="VBox/DisplaySection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Display"
+
+[node name="FullscreenCheck" type="CheckButton" parent="VBox/DisplaySection"]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="VSyncCheck" type="CheckButton" parent="VBox/DisplaySection"]
+layout_mode = 2
+button_pressed = true
+text = "VSync"
+
+[node name="HSeparator3" type="HSeparator" parent="VBox"]
+layout_mode = 2
+
+[node name="DataSection" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="DataLabel" type="Label" parent="VBox/DataSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Data"
+
+[node name="SaveButton" type="Button" parent="VBox/DataSection"]
+layout_mode = 2
+text = "Save Game (Ctrl+S)"
+
+[node name="ExportButton" type="Button" parent="VBox/DataSection"]
+layout_mode = 2
+text = "Export Save"
+
+[node name="ImportButton" type="Button" parent="VBox/DataSection"]
+layout_mode = 2
+text = "Import Save"
+
+[node name="DeleteButton" type="Button" parent="VBox/DataSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
+text = "Delete Save (Caution!)"
+
+[node name="HSeparator4" type="HSeparator" parent="VBox"]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="VBox"]
+layout_mode = 2
+text = "Close"

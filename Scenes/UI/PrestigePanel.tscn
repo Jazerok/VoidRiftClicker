@@ -1,0 +1,84 @@
+[gd_scene load_steps=1 format=3 uid="uid://prestige_panel_scene"]
+
+[node name="PrestigePanel" type="PanelContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_right = 200.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "GALAXY RESET"
+horizontal_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="VBox"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Reset your progress to earn permanent [color=#ffdd88]Star Dust[/color] and unlock powerful prestige upgrades![/center]"
+
+[node name="RewardContainer" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="CurrentLabel" type="Label" parent="VBox/RewardContainer"]
+layout_mode = 2
+text = "Current Star Dust: 0"
+horizontal_alignment = 1
+
+[node name="GainLabel" type="Label" parent="VBox/RewardContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 1, 0.4, 1)
+theme_override_font_sizes/font_size = 20
+text = "+0 Star Dust"
+horizontal_alignment = 1
+
+[node name="TotalLabel" type="Label" parent="VBox/RewardContainer"]
+layout_mode = 2
+text = "Total after reset: 0"
+horizontal_alignment = 1
+
+[node name="ProgressContainer" type="VBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="ProgressLabel" type="Label" parent="VBox/ProgressContainer"]
+layout_mode = 2
+text = "Progress to next:"
+horizontal_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="VBox/ProgressContainer"]
+layout_mode = 2
+value = 50.0
+
+[node name="ButtonContainer" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="CancelButton" type="Button" parent="VBox/ButtonContainer"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+text = "Cancel"
+
+[node name="ResetButton" type="Button" parent="VBox/ButtonContainer"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+text = "GALAXY RESET"
+
+[node name="Warning" type="Label" parent="VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.4, 1)
+theme_override_font_sizes/font_size = 12
+text = "Warning: This will reset all non-prestige progress!"
+horizontal_alignment = 1

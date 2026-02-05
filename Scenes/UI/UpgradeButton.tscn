@@ -1,0 +1,53 @@
+[gd_scene load_steps=2 format=3 uid="uid://upgrade_button_scene"]
+
+[ext_resource type="Script" path="res://Scripts/UI/UpgradeButton.gd" id="1_upgrade_button"]
+
+[node name="UpgradeButton" type="Button"]
+custom_minimum_size = Vector2(300, 80)
+script = ExtResource("1_upgrade_button")
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Icon" type="TextureRect" parent="HBox"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NameLabel" type="Label" parent="HBox/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Upgrade Name"
+
+[node name="EffectLabel" type="Label" parent="HBox/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+text = "+X effect per level"
+
+[node name="HBox2" type="HBoxContainer" parent="HBox/VBox"]
+layout_mode = 2
+
+[node name="CostLabel" type="Label" parent="HBox/VBox/HBox2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+text = "Cost: 100"
+
+[node name="CountLabel" type="Label" parent="HBox/VBox/HBox2"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.6, 0.8, 1, 1)
+text = "x0"
+horizontal_alignment = 2
