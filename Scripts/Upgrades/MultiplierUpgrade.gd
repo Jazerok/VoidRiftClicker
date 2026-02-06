@@ -22,13 +22,13 @@ func apply_effect() -> void:
 	match target:
 		MultiplierTarget.CLICK:
 			GameManager.increase_click_multiplier(multiplier)
-			print("MultiplierUpgrade %s: Click multiplier x%s" % [id, multiplier])
+			pass
 		MultiplierTarget.PASSIVE:
 			GameManager.increase_passive_multiplier(multiplier)
-			print("MultiplierUpgrade %s: Passive multiplier x%s" % [id, multiplier])
+			pass
 		MultiplierTarget.GLOBAL:
 			GameManager.increase_global_multiplier(multiplier)
-			print("MultiplierUpgrade %s: Global multiplier x%s" % [id, multiplier])
+			pass
 
 
 func get_effect_description() -> String:

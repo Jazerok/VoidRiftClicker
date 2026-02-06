@@ -13,7 +13,7 @@ var _upgrade_order: Array[String] = []
 
 func _ready() -> void:
 	_register_all_upgrades()
-	print("UpgradeManager: Registered %d upgrades" % _upgrades.size())
+	pass
 
 
 func _process(delta: float) -> void:
@@ -161,11 +161,11 @@ func _check_upgrade_states() -> void:
 
 		if upgrade.check_visibility() and not was_visible:
 			upgrade_revealed.emit(upgrade.id)
-			print("UpgradeManager: Revealed %s" % upgrade.id)
+			pass
 
 		if upgrade.check_unlock() and not was_unlocked:
 			upgrade_unlocked.emit(upgrade.id)
-			print("UpgradeManager: Unlocked %s" % upgrade.id)
+			pass
 
 	_check_synergy_unlock()
 
@@ -186,7 +186,7 @@ func _check_synergy_unlock() -> void:
 		synergy.is_unlocked = true
 		upgrade_revealed.emit(synergy.id)
 		upgrade_unlocked.emit(synergy.id)
-		print("UpgradeManager: Synergy Bonus unlocked!")
+		pass
 
 
 func _update_special_upgrades(delta: float) -> void:
@@ -207,7 +207,7 @@ func reset_for_prestige() -> void:
 			upgrade.apply_effect()
 
 	upgrades_refreshed.emit()
-	print("UpgradeManager: Reset for prestige")
+	pass
 
 
 func get_save_data() -> Dictionary:
@@ -223,11 +223,11 @@ func load_save_data(data: Dictionary) -> void:
 			var upgrade_data: Dictionary = data[id]
 			_upgrades[id].load_save_data(upgrade_data)
 		else:
-			print("UpgradeManager: Unknown upgrade in save: %s" % id)
+			pass
 
 	_reapply_all_effects()
 	upgrades_refreshed.emit()
-	print("UpgradeManager: Loaded save data")
+	pass
 
 
 func _reapply_all_effects() -> void:

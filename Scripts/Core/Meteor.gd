@@ -56,7 +56,7 @@ func _ready() -> void:
 	mouse_exited.connect(_on_mouse_exited)
 
 	# Initialize trail positions
-	_trail_positions.resize(20)
+	_trail_positions.resize(6)
 	for i in _trail_positions.size():
 		_trail_positions[i] = global_position
 
@@ -88,7 +88,7 @@ func initialize(type: int, start_pos: Vector2, vel: Vector2) -> void:
 	_set_colors_for_type(type)
 	_assign_reward(type)
 
-	print("Meteor spawned: %s with %s reward, size %s" % [MeteorType.keys()[type], RewardType.keys()[reward_type], meteor_size])
+
 
 
 func _set_colors_for_type(type: int) -> void:
@@ -177,8 +177,8 @@ func _draw() -> void:
 	_draw_trail(center)
 
 	# Draw outer glow
-	for i in range(4, 0, -1):
-		var glow_size := meteor_size * (0.8 + i * 0.4) * pulse
+	for i in range(2, 0, -1):
+		var glow_size := meteor_size * (0.8 + i * 0.6) * pulse
 		var glow := _glow_color
 		glow.a = _glow_color.a * (0.15 / i)
 		draw_circle(center, glow_size, glow)
@@ -337,7 +337,7 @@ func _on_clicked() -> void:
 		return
 	_was_clicked = true
 
-	print("Meteor clicked! Type: %s, Reward: %s" % [MeteorType.keys()[meteor_type], RewardType.keys()[reward_type]])
+
 
 	# Play sound
 	if AudioManager:
@@ -385,7 +385,7 @@ func _apply_combo_multiplier() -> void:
 			duration = 5.0
 
 	GameManager.apply_temporary_multiplier(multiplier, duration, "Meteor Combo")
-	print("Applied %sx combo for %ss" % [multiplier, duration])
+	pass
 
 
 func _apply_frenzy_boost() -> void:
@@ -404,7 +404,7 @@ func _apply_frenzy_boost() -> void:
 			boost = 0.5
 
 	GameManager.boost_frenzy(boost)
-	print("Boosted Cosmic Surge by x%s" % boost)
+	pass
 
 
 func _apply_energy_burst() -> void:
@@ -427,7 +427,7 @@ func _apply_energy_burst() -> void:
 		bonus = GameManager.effective_click_power.multiply(income_multiplier)
 
 	GameManager.add_void_energy(bonus)
-	print("Energy burst: +%s" % bonus.to_formatted_string())
+	pass
 
 
 func _apply_crit_boost() -> void:
@@ -452,7 +452,7 @@ func _apply_crit_boost() -> void:
 			duration = 10.0
 
 	GameManager.apply_temporary_crit_boost(chance, duration)
-	print("Crit boost: +%d%% for %ss" % [chance * 100, duration])
+	pass
 
 
 func _play_explosion_effect() -> void:

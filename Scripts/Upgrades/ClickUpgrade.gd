@@ -17,7 +17,7 @@ func get_click_power_bonus() -> BigNumber:
 
 func apply_effect() -> void:
 	GameManager.increase_base_click_power(get_click_power_bonus())
-	print("ClickUpgrade %s: Applied +%s click power" % [id, get_click_power_bonus().to_formatted_string()])
+	pass
 
 
 func get_effect_description() -> String:

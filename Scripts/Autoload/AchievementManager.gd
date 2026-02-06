@@ -22,7 +22,7 @@ var total_count: int:
 
 func _ready() -> void:
 	_register_all_achievements()
-	print("AchievementManager: Registered %d achievements" % _achievements.size())
+	pass
 
 
 func _process(_delta: float) -> void:
@@ -161,7 +161,7 @@ func _unlock_achievement(achievement: Achievement) -> void:
 
 	achievement_unlocked.emit(achievement.id, achievement.name, achievement.description)
 
-	print("Achievement Unlocked: %s!" % achievement.name)
+	pass
 
 	if SaveManager:
 		SaveManager.mark_unsaved_changes()
@@ -220,7 +220,7 @@ func load_save_data(data: Dictionary) -> void:
 			_achievements[key].is_unlocked = data[key]
 			_achievements[key].progress = 1.0
 
-	print("AchievementManager: Loaded %d achievements" % unlocked_count)
+	pass
 
 
 func reset_all() -> void:
@@ -229,7 +229,7 @@ func reset_all() -> void:
 		ach.progress = 0
 		ach.unlocked_at = ""
 	achievement_multiplier = 1.0
-	print("AchievementManager: All achievements reset!")
+	pass
 
 
 class Achievement:

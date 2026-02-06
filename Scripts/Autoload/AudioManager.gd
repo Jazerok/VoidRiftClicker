@@ -47,7 +47,7 @@ func _ready() -> void:
 		master_idx = 0
 	AudioServer.set_bus_volume_db(master_idx, linear_to_db(0.1))
 
-	print("AudioManager: Initialized with SFX pool of %d, Master volume at 10%%" % SFX_POOL_SIZE)
+	pass
 
 
 # SFX Playback
@@ -141,7 +141,7 @@ func toggle_mute() -> void:
 	elif not is_muted:
 		_music_player.stream_paused = false
 
-	print("Audio muted: %s" % is_muted)
+	pass
 
 
 func set_muted(muted: bool) -> void:

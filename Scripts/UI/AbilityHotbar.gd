@@ -37,7 +37,7 @@ const ABILITY_LOCKED := Color(0.2, 0.2, 0.2, 0.7)
 func _ready() -> void:
 	_initialize_abilities()
 	_build_ui()
-	print("AbilityHotbar: Ready!")
+	pass
 
 
 func _process(delta: float) -> void:
@@ -129,7 +129,7 @@ func _initialize_abilities() -> void:
 	lucky.on_activate = func():
 		var mult := randf_range(2.0, 10.0)
 		GameManager.activate_multiplier("lucky_star", mult, 15.0)
-		print("Lucky Star: x%.1f multiplier!" % mult)
+		pass
 	_abilities.append(lucky)
 
 	# Ability 5: Overdrive
@@ -158,7 +158,7 @@ func _initialize_abilities() -> void:
 	surge.on_activate = func():
 		var bonus := GameManager.effective_passive_income.multiply(10)
 		GameManager.add_void_energy(bonus)
-		print("Energy Surge: +%s" % bonus.to_formatted_string())
+		pass
 	_abilities.append(surge)
 
 	# Ability 7: Time Warp
@@ -187,7 +187,7 @@ func _initialize_abilities() -> void:
 	void_blast.on_activate = func():
 		var mega_click := GameManager.effective_click_power.multiply(20)
 		GameManager.add_void_energy(mega_click)
-		print("Void Blast: +%s" % mega_click.to_formatted_string())
+		pass
 	_abilities.append(void_blast)
 
 	# Ability 9: Fortune's Favor
@@ -343,20 +343,20 @@ func _create_ability_button(ability: Ability) -> void:
 
 func _try_activate_ability(ability: Ability) -> void:
 	if not ability.is_unlocked:
-		print("Ability %s is locked!" % ability.ability_name)
+		pass
 		AudioManager.play_error_sfx()
 		return
 
 	if ability.is_on_cooldown:
-		print("Ability %s is on cooldown: %.1fs" % [ability.ability_name, ability.cooldown_remaining])
+		pass
 		AudioManager.play_error_sfx()
 		return
 
 	if ability.is_active:
-		print("Ability %s is already active!" % ability.ability_name)
+		pass
 		return
 
-	print("Activating ability: %s" % ability.ability_name)
+	pass
 	ability.on_activate.call()
 
 	if ability.duration > 0:
@@ -367,7 +367,7 @@ func _try_activate_ability(ability: Ability) -> void:
 
 
 func _on_ability_ended(ability: Ability) -> void:
-	print("Ability ended: %s" % ability.ability_name)
+	pass
 	GameManager.deactivate_multiplier(ability.id)
 
 
@@ -410,7 +410,7 @@ func unlock_ability(ability_id: String) -> void:
 	for ability in _abilities:
 		if ability.id == ability_id:
 			ability.is_unlocked = true
-			print("Ability unlocked: %s" % ability.ability_name)
+			pass
 			return
 
 
@@ -439,7 +439,7 @@ func get_unlocked_ability_ids() -> Array[String]:
 func set_unlocked_abilities(unlocked_ids: Array) -> void:
 	for ability in _abilities:
 		ability.is_unlocked = unlocked_ids.has(ability.id)
-	print("AbilityHotbar: Restored %d unlocked abilities" % unlocked_ids.size())
+	pass
 
 
 func sync_with_upgrades() -> void:
@@ -461,4 +461,4 @@ func sync_with_upgrades() -> void:
 			var upgrade := UpgradeManager.get_upgrade(upgrade_id)
 			if upgrade and upgrade.is_owned:
 				ability.is_unlocked = true
-				print("AbilityHotbar: Synced ability '%s' as unlocked" % ability.id)
+				pass

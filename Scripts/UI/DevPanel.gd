@@ -10,7 +10,7 @@ var _is_expanded: bool = false
 func _ready() -> void:
 	call_deferred("_build_dev_panel")
 	call_deferred("move_to_front")
-	print("DevPanel: Ready!")
+	pass
 
 
 func _build_dev_panel() -> void:
@@ -219,16 +219,16 @@ func _toggle_panel() -> void:
 		_panel.visible = _is_expanded
 		if _is_expanded:
 			_panel.move_to_front()
-	print("DevPanel: Toggled to %s" % ("open" if _is_expanded else "closed"))
+	pass
 
 
 func _add_energy(amount: float) -> void:
 	GameManager.add_void_energy(BigNumber.new(amount))
-	print("DevPanel: Added %s Void Energy" % amount)
+	pass
 
 
 func _reset_progress() -> void:
-	print("DevPanel: Resetting all progress...")
+	pass
 
 	GameManager.reset_all_progress()
 	UpgradeManager.reset_for_prestige()
@@ -237,17 +237,17 @@ func _reset_progress() -> void:
 	SaveManager.delete_save()
 	SaveManager.save_game()
 
-	print("DevPanel: Progress reset complete!")
+	pass
 
 
 func _delete_save_file() -> void:
-	print("DevPanel: Deleting save file...")
+	pass
 	SaveManager.delete_save()
-	print("DevPanel: Save file deleted. Restart the game to start fresh.")
+	pass
 
 
 func _spawn_meteor(type: int) -> void:
-	print("DevPanel: SpawnMeteor called with type %d" % type)
+	pass
 	var meteor_type: int
 	match type:
 		0: meteor_type = Meteor.MeteorType.SMALL
@@ -257,10 +257,10 @@ func _spawn_meteor(type: int) -> void:
 		_: meteor_type = Meteor.MeteorType.SMALL
 
 	MeteorManager.spawn_meteor(meteor_type)
-	print("DevPanel: Spawned meteor type %d" % meteor_type)
+	pass
 
 
 func _spawn_meteor_shower() -> void:
-	print("DevPanel: SpawnMeteorShower called")
+	pass
 	MeteorManager.start_meteor_shower()
-	print("DevPanel: Started meteor shower!")
+	pass

@@ -51,7 +51,7 @@ func _ready() -> void:
 	if frenzy_particles:
 		frenzy_particles.emitting = false
 
-	print("PortalController: Ready")
+	pass
 
 
 func _process(delta: float) -> void:

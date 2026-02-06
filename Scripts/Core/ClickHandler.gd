@@ -36,7 +36,7 @@ func _ready() -> void:
 		GameManager.click_registered.connect(_on_click_registered)
 		GameManager.frenzy_state_changed.connect(_on_frenzy_state_changed)
 
-	print("ClickHandler: Ready!")
+	pass
 
 
 func _process(delta: float) -> void:

@@ -43,7 +43,7 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mouse_event := event as InputEventMouseButton
 		if mouse_event.pressed:
-			print("UpgradeButton._gui_input: Mouse button %d on %s" % [mouse_event.button_index, _upgrade.id if _upgrade else "unknown"])
+			pass
 
 
 func _process(_delta: float) -> void:
@@ -53,7 +53,7 @@ func _process(_delta: float) -> void:
 
 func setup(upgrade: BaseUpgrade) -> void:
 	_upgrade = upgrade
-	print("UpgradeButton.setup: %s - Visible=%s, Unlocked=%s, Owned=%d" % [upgrade.id, upgrade.is_visible, upgrade.is_unlocked, upgrade.owned_count])
+	pass
 	_ensure_labels_found()
 	update_display()
 
@@ -230,20 +230,20 @@ func _get_current_cost() -> BigNumber:
 
 
 func _on_pressed() -> void:
-	print("UpgradeButton._on_pressed: Clicked! Upgrade=%s" % [_upgrade.id if _upgrade else "null"])
+	pass
 
 	if _upgrade == null:
-		print("UpgradeButton._on_pressed: _upgrade is null!")
+		pass
 		AudioManager.play_error_sfx()
 		return
 
 	if not _upgrade.is_unlocked:
-		print("UpgradeButton._on_pressed: %s is not unlocked!" % _upgrade.id)
+		pass
 		AudioManager.play_error_sfx()
 		return
 
 	if not _upgrade.can_purchase_more:
-		print("UpgradeButton._on_pressed: %s cannot purchase more (maxed)!" % _upgrade.id)
+		pass
 		AudioManager.play_error_sfx()
 		return
 

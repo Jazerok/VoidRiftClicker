@@ -20,7 +20,7 @@ func get_production_per_second() -> BigNumber:
 
 func apply_effect() -> void:
 	GameManager.increase_base_passive_income(get_production_per_second())
-	print("PassiveUpgrade %s: Applied +%s/sec" % [id, get_production_per_second().to_formatted_string()])
+	pass
 
 
 func get_effect_description() -> String:

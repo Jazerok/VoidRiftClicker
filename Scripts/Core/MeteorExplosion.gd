@@ -26,7 +26,7 @@ func initialize(glow_color: Color, core_color: Color, size: float, is_comet: boo
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	# Create debris particles
-	var debris_count := 20 if is_comet else 12
+	var debris_count := 8 if is_comet else 5
 	for i in debris_count:
 		var angle := randf_range(0, PI * 2)
 		var speed := randf_range(150, 400) * (1.5 if is_comet else 1.0)
@@ -40,7 +40,7 @@ func initialize(glow_color: Color, core_color: Color, size: float, is_comet: boo
 		})
 
 	# Create sparkles
-	var sparkle_count := 30 if is_comet else 15
+	var sparkle_count := 10 if is_comet else 5
 	for i in sparkle_count:
 		var angle := randf_range(0, PI * 2)
 		var speed := randf_range(80, 250)
@@ -96,7 +96,7 @@ func _draw() -> void:
 		draw_circle(center, flash_size, Color(_glow_color.r, _glow_color.g, _glow_color.b, flash_alpha * 0.4))
 
 	# Expanding shockwave rings
-	for ring in 4:
+	for ring in 2:
 		var ring_delay := ring * 0.08
 		var ring_progress := clampf((_timer - ring_delay) / (_duration * 0.6), 0, 1)
 
@@ -108,11 +108,11 @@ func _draw() -> void:
 			var ring_color := _glow_color if ring % 2 == 0 else _core_color
 			ring_color.a = ring_alpha
 
-			draw_arc(center, ring_size, 0, PI * 2, 48, ring_color, ring_width)
+			draw_arc(center, ring_size, 0, PI * 2, 24, ring_color, ring_width)
 
 			var glow_ring := ring_color
 			glow_ring.a = ring_alpha * 0.3
-			draw_arc(center, ring_size + 4, 0, PI * 2, 48, glow_ring, ring_width + 4)
+			draw_arc(center, ring_size + 4, 0, PI * 2, 24, glow_ring, ring_width + 4)
 
 	# Draw debris chunks
 	for d in _debris:

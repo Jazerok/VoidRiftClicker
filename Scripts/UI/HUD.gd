@@ -49,7 +49,7 @@ func _ready() -> void:
 	call_deferred("_deferred_initialize")
 	call_deferred("_start_background_music")
 
-	print("HUD: Ready!")
+	pass
 
 
 func _create_prestige_button() -> void:
@@ -101,7 +101,7 @@ func _create_prestige_button() -> void:
 	_prestige_button.pressed.connect(_on_prestige_button_pressed)
 
 	btn_container.add_child(_prestige_button)
-	print("HUD: Prestige button created in TopBar!")
+	pass
 
 
 func _create_mute_button() -> void:
@@ -142,7 +142,7 @@ func _create_mute_button() -> void:
 
 	_create_settings_panel()
 	call_deferred("_position_settings_button")
-	print("HUD: Settings button created!")
+	pass
 
 
 func _position_settings_button() -> void:
@@ -337,7 +337,7 @@ func _on_mute_toggled(toggled: bool) -> void:
 func _start_background_music() -> void:
 	if AudioManager:
 		AudioManager.start_ambient_music()
-		print("HUD: Started background music")
+		pass
 
 
 func _process(delta: float) -> void:
@@ -431,7 +431,7 @@ func _update_slider_from_position(slider: HSlider, pos: Vector2) -> void:
 
 
 func _on_prestige_button_pressed() -> void:
-	print("HUD: Prestige button pressed!")
+	pass
 
 	if _prestige_screen == null:
 		_prestige_screen = get_node_or_null("../PrestigeScreen")
@@ -459,7 +459,7 @@ func _deferred_initialize() -> void:
 		GameManager.click_registered.connect(_on_click_registered)
 
 		_initialize_display()
-		print("HUD: Connected to GameManager")
+		pass
 	else:
 		printerr("HUD: GameManager not found!")
 
@@ -573,4 +573,4 @@ func refresh_all() -> void:
 
 
 func show_notification(message: String, _duration: float = 2.0) -> void:
-	print("Notification: %s" % message)
+	pass

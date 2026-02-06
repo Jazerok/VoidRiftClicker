@@ -91,11 +91,11 @@ func get_affordable_count(budget: BigNumber) -> int:
 
 func purchase() -> bool:
 	if not can_purchase_more:
-		print("Upgrade %s: Already at max level (%d)" % [id, max_purchases])
+		pass
 		return false
 
 	if not is_unlocked:
-		print("Upgrade %s: Not unlocked yet" % id)
+		pass
 		return false
 
 	var cost := get_current_cost()
@@ -103,12 +103,12 @@ func purchase() -> bool:
 
 	if is_prestige:
 		if not GameManager.can_afford_star_dust(cost):
-			print("Upgrade %s: Cannot afford (need %s Star Dust)" % [id, cost.to_formatted_string()])
+			pass
 			return false
 		GameManager.spend_star_dust(cost)
 	else:
 		if not GameManager.can_afford(cost):
-			print("Upgrade %s: Cannot afford (need %s)" % [id, cost.to_formatted_string()])
+			pass
 			return false
 		GameManager.spend_void_energy(cost)
 
@@ -118,7 +118,7 @@ func purchase() -> bool:
 	if SaveManager:
 		SaveManager.mark_unsaved_changes()
 
-	print("Upgrade %s: Purchased! Now own %d" % [id, owned_count])
+	pass
 	return true
 
 
@@ -149,7 +149,7 @@ func purchase_bulk(count: int) -> int:
 	if SaveManager:
 		SaveManager.mark_unsaved_changes()
 
-	print("Upgrade %s: Bulk purchased %d! Now own %d" % [id, to_purchase, owned_count])
+	pass
 	return to_purchase
 
 

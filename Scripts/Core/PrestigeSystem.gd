@@ -48,10 +48,10 @@ static func perform_prestige() -> BigNumber:
 	var star_dust_earned := GameManager.potential_star_dust
 
 	if star_dust_earned.is_zero:
-		print("PrestigeSystem: Cannot prestige - insufficient progress")
+		pass
 		return BigNumber.zero()
 
-	print("PrestigeSystem: Performing Galaxy Reset for %s Star Dust" % star_dust_earned.to_formatted_string())
+	pass
 
 	GameManager.add_star_dust(star_dust_earned)
 	GameManager.perform_prestige()
@@ -62,7 +62,7 @@ static func perform_prestige() -> BigNumber:
 	if AudioManager:
 		AudioManager.play_prestige_sfx()
 
-	print("PrestigeSystem: Galaxy Reset complete! Total Star Dust: %s" % GameManager.star_dust.to_formatted_string())
+	pass
 
 	return star_dust_earned
 

@@ -26,18 +26,18 @@ func apply_effect() -> void:
 	match bonus_type:
 		PrestigeBonusType.GLOBAL_MULTIPLIER:
 			GameManager.increase_global_multiplier(bonus_value)
-			print("PrestigeUpgrade %s: Global multiplier x%s" % [id, bonus_value])
+			pass
 		PrestigeBonusType.CLICK_MULTIPLIER:
 			GameManager.increase_click_multiplier(bonus_value)
-			print("PrestigeUpgrade %s: Click multiplier x%s" % [id, bonus_value])
+			pass
 		PrestigeBonusType.PASSIVE_MULTIPLIER:
 			GameManager.increase_passive_multiplier(bonus_value)
-			print("PrestigeUpgrade %s: Passive multiplier x%s" % [id, bonus_value])
+			pass
 		PrestigeBonusType.STARTING_ENERGY:
 			GameManager.add_void_energy(BigNumber.new(bonus_value))
-			print("PrestigeUpgrade %s: Starting energy +%s" % [id, bonus_value])
+			pass
 		PrestigeBonusType.STAR_DUST_BONUS:
-			print("PrestigeUpgrade %s: Star Dust bonus +%d%%" % [id, bonus_value * 100])
+			pass
 
 
 func get_effect_description() -> String:

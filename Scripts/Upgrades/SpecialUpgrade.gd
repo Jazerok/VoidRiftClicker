@@ -35,7 +35,7 @@ func _init() -> void:
 
 
 func apply_effect() -> void:
-	print("SpecialUpgrade %s: Enabled %s" % [id, SpecialEffectType.keys()[effect_type]])
+	pass
 
 	match effect_type:
 		SpecialEffectType.DOUBLE_TAP:
@@ -66,7 +66,7 @@ func _unlock_hotbar_ability() -> void:
 	var hotbar = GameManager.get_tree().root.find_child("AbilityHotbar", true, false)
 	if hotbar and hotbar.has_method("unlock_ability"):
 		hotbar.unlock_ability(ability_id)
-		print("SpecialUpgrade: Unlocked ability '%s' via upgrade '%s'" % [ability_id, id])
+		pass
 	else:
 		push_error("SpecialUpgrade: Could not find AbilityHotbar to unlock ability '%s'" % ability_id)
 
@@ -148,7 +148,7 @@ func activate_manual() -> bool:
 	effect_time_remaining = effect_duration
 	cooldown_remaining = cooldown
 
-	print("SpecialUpgrade %s: Overdrive activated! x%s for %ss" % [id, effect_strength, effect_duration])
+	pass
 	return true
 
 
@@ -158,7 +158,7 @@ func update_timers(delta: float) -> void:
 		if effect_time_remaining <= 0:
 			is_effect_active = false
 			effect_time_remaining = 0
-			print("SpecialUpgrade %s: Effect ended" % id)
+			pass
 
 	if cooldown_remaining > 0:
 		cooldown_remaining -= delta

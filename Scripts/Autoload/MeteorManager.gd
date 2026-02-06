@@ -28,7 +28,7 @@ var total_comets_clicked: int = 0
 func _ready() -> void:
 	_next_meteor_time = randf_range(min_spawn_interval * 0.5, max_spawn_interval * 0.5)
 	_next_comet_time = randf_range(min_comet_interval, max_comet_interval)
-	print("MeteorManager: Ready! First meteor in %.1fs, first comet in %.1fs" % [_next_meteor_time, _next_comet_time])
+	pass
 
 
 func _process(delta: float) -> void:
@@ -50,7 +50,7 @@ func _process(delta: float) -> void:
 
 func set_meteor_container(container: Control) -> void:
 	_meteor_container = container
-	print("MeteorManager: Container set")
+	pass
 
 
 func _get_or_create_container() -> Control:
@@ -68,14 +68,14 @@ func _get_or_create_container() -> Control:
 			meteor_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			ui.add_child(meteor_layer)
 			ui.move_child(meteor_layer, 0)
-			print("MeteorManager: Created MeteorLayer in UI")
+			pass
 		_meteor_container = meteor_layer
 		return meteor_layer
 
 	var any_control := root.find_child("*", true, false) as Control
 	if any_control:
 		_meteor_container = any_control
-		print("MeteorManager: Using %s as container" % any_control.name)
+		pass
 		return any_control
 
 	push_error("MeteorManager: No suitable container found!")
@@ -97,19 +97,19 @@ func spawn_random_meteor() -> void:
 
 
 func spawn_comet() -> void:
-	print("MeteorManager: Spawning rare COMET!")
+	pass
 	spawn_meteor(Meteor.MeteorType.COMET)
 
 
 func spawn_meteor(meteor_type: int) -> void:
-	print("MeteorManager: Attempting to spawn %s meteor..." % Meteor.MeteorType.keys()[meteor_type])
+	pass
 
 	var container := _get_or_create_container()
 	if not container:
 		push_error("MeteorManager: Cannot spawn meteor - no container!")
 		return
 
-	print("MeteorManager: Using container: %s" % container.name)
+	pass
 
 	var meteor := Meteor.new()
 	container.add_child(meteor)
@@ -133,9 +133,9 @@ func start_meteor_shower() -> void:
 	var comet_index := randi_range(0, count - 1) if has_comet else -1
 
 	if has_comet:
-		print("MeteorManager: METEOR SHOWER with COMET! Spawning %d meteors!" % count)
+		pass
 	else:
-		print("MeteorManager: Meteor shower! Spawning %d meteors." % count)
+		pass
 
 	meteor_shower_started.emit(count)
 
@@ -201,7 +201,7 @@ func _on_meteor_clicked(meteor: Node) -> void:
 
 	if meteor.meteor_type == Meteor.MeteorType.COMET:
 		total_comets_clicked += 1
-		print("MeteorManager: Comet caught! Total comets: %d" % total_comets_clicked)
+		pass
 
 	_active_meteors.erase(meteor)
 	meteor_caught.emit(meteor)
@@ -209,7 +209,7 @@ func _on_meteor_clicked(meteor: Node) -> void:
 
 func _on_meteor_expired(meteor: Node) -> void:
 	_active_meteors.erase(meteor)
-	print("MeteorManager: Meteor expired (missed)")
+	pass
 
 
 func debug_spawn_meteor() -> void:

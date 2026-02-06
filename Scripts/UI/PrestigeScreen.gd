@@ -62,7 +62,7 @@ func _ready() -> void:
 
 	_initialize_nodes()
 	call_deferred("_build_ui")
-	print("PrestigeScreen: Ready!")
+	pass
 
 
 func _process(delta: float) -> void:
@@ -156,7 +156,7 @@ func _initialize_nodes() -> void:
 	_add_node("stardust_2", "Resonance II", "+25% Star Dust from resets", 60, PrestigeBranch.GLOBAL, Vector2(100, -300), ["center_3"], PrestigeBonusType.STAR_DUST_BONUS, 0.25)
 	_add_node("stardust_3", "Resonance III", "+50% Star Dust from resets!", 150, PrestigeBranch.GLOBAL, Vector2(0, -480), ["center_5"], PrestigeBonusType.STAR_DUST_BONUS, 0.50)
 
-	print("PrestigeScreen: Initialized %d nodes" % _nodes.size())
+	pass
 
 
 func _add_node(id: String, node_name: String, desc: String, cost: int, branch: int, pos: Vector2, prereqs: Array, bonus_type: int, bonus_value: float) -> void:
@@ -430,17 +430,17 @@ func _on_node_pressed(node_id: String) -> void:
 		return
 
 	if node.is_purchased:
-		print("PrestigeScreen: Node %s already purchased" % node_id)
+		pass
 		return
 
 	if not _are_prerequisites_met(node):
-		print("PrestigeScreen: Prerequisites not met for %s" % node_id)
+		pass
 		AudioManager.play_error_sfx()
 		return
 
 	var cost := BigNumber.new(node.cost)
 	if not GameManager.can_afford_star_dust(cost):
-		print("PrestigeScreen: Cannot afford %s (need %d SD)" % [node_id, node.cost])
+		pass
 		AudioManager.play_error_sfx()
 		return
 
@@ -457,7 +457,7 @@ func _on_node_pressed(node_id: String) -> void:
 	AudioManager.play_purchase_sfx()
 	SaveManager.mark_unsaved_changes()
 
-	print("PrestigeScreen: Purchased %s!" % node.node_name)
+	pass
 
 
 func _are_prerequisites_met(node: PrestigeNode) -> bool:
@@ -510,7 +510,7 @@ func _update_all_node_states() -> void:
 func _on_galaxy_reset_pressed() -> void:
 	var star_dust_earned: BigNumber = PrestigeSystem.perform_prestige()
 	if not star_dust_earned.is_zero:
-		print("PrestigeScreen: Galaxy Reset! Earned %s Star Dust" % star_dust_earned.to_formatted_string())
+		pass
 		_update_all_node_states()
 
 

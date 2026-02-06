@@ -19,7 +19,7 @@ var has_unsaved_changes: bool = false
 func _ready() -> void:
 	load_game()
 	get_tree().auto_accept_quit = false
-	print("SaveManager: Initialized successfully")
+	pass
 
 
 func _process(delta: float) -> void:
@@ -31,7 +31,7 @@ func _process(delta: float) -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		print("SaveManager: Game closing, saving progress...")
+		pass
 		save_game(false)
 		get_tree().quit()
 
@@ -39,12 +39,12 @@ func _notification(what: int) -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("save_game"):
 		save_game(false)
-		print("SaveManager: Manual save triggered")
+		pass
 
 
 func save_game(is_autosave: bool = false) -> bool:
 	if _is_saving:
-		print("SaveManager: Save already in progress, skipping")
+		pass
 		return false
 
 	_is_saving = true
@@ -87,7 +87,7 @@ func save_game(is_autosave: bool = false) -> bool:
 	has_unsaved_changes = false
 
 	if not is_autosave:
-		print("SaveManager: Game saved successfully!")
+		pass
 
 	game_saved.emit()
 	_is_saving = false
@@ -96,7 +96,7 @@ func save_game(is_autosave: bool = false) -> bool:
 
 func load_game() -> bool:
 	if not FileAccess.file_exists(SAVE_PATH):
-		print("SaveManager: No save file found, starting fresh game")
+		pass
 		return true
 
 	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
@@ -118,7 +118,7 @@ func load_game() -> bool:
 
 	var save_version := int(save_data.get("version", 1))
 	if save_version != SAVE_VERSION:
-		print("SaveManager: Migrating save from v%d to v%d" % [save_version, SAVE_VERSION])
+		pass
 		save_data = _migrate_save_data(save_data, save_version)
 
 	var game_data: Dictionary = save_data.get("game_data", {})
@@ -136,7 +136,7 @@ func load_game() -> bool:
 
 	call_deferred("_sync_ability_hotbar")
 
-	print("SaveManager: Game loaded successfully!")
+	pass
 	game_loaded.emit()
 
 	has_unsaved_changes = false
@@ -149,7 +149,7 @@ func _try_load_backup() -> bool:
 		save_error.emit("Save file corrupted and no backup available")
 		return false
 
-	print("SaveManager: Trying to load from backup...")
+	pass
 	DirAccess.copy_absolute(ProjectSettings.globalize_path(BACKUP_PATH), ProjectSettings.globalize_path(SAVE_PATH))
 	return load_game()
 
@@ -162,11 +162,11 @@ func _migrate_save_data(save_data: Dictionary, from_version: int) -> Dictionary:
 func delete_save() -> void:
 	if FileAccess.file_exists(SAVE_PATH):
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(SAVE_PATH))
-		print("SaveManager: Save file deleted")
+		pass
 
 	if FileAccess.file_exists(BACKUP_PATH):
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(BACKUP_PATH))
-		print("SaveManager: Backup file deleted")
+		pass
 
 
 func save_exists() -> bool:
@@ -185,4 +185,4 @@ func _sync_ability_hotbar() -> void:
 	var hotbar := get_tree().root.find_child("AbilityHotbar", true, false)
 	if hotbar and hotbar.has_method("sync_with_upgrades"):
 		hotbar.sync_with_upgrades()
-		print("SaveManager: Synced ability hotbar with upgrades")
+		pass

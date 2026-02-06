@@ -44,7 +44,7 @@ func _ready() -> void:
 	call_deferred("_build_floating_panels")
 	call_deferred("_deferred_initialize")
 
-	print("UpgradePanel: Ready with floating bubble design!")
+	pass
 
 
 func _deferred_initialize() -> void:
@@ -181,7 +181,7 @@ func _build_floating_panels() -> void:
 	_create_tab_category(_right_tab_content_inner, BaseUpgrade.UpgradeCategory.MULTIPLIER, "MULTIPLIERS")
 
 	_switch_right_tab(_active_right_tab)
-	print("UpgradePanel: Right panel created with tabs!")
+	pass
 
 
 func _create_bubble_panel(panel_name: String) -> Control:
@@ -436,7 +436,7 @@ func _rebuild_upgrade_list() -> void:
 	_upgrade_buttons.clear()
 
 	var all_upgrades: Array = UpgradeManager.get_all_upgrades()
-	print("UpgradePanel: Found %d total upgrades" % all_upgrades.size())
+	pass
 
 	for upgrade in all_upgrades:
 		_add_upgrade_button(upgrade)

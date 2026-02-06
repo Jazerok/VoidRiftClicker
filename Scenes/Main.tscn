@@ -14,7 +14,6 @@ var portal_radius = 220.0
 
 func _ready():
 	get_window().title = \"Void Rift Clicker\"
-	print(\"Main scene loaded!\")
 
 func _input(event):
 	if event.is_action_pressed(\"toggle_upgrades\"):
@@ -54,80 +53,44 @@ script/source = "extends Node2D
 
 var stars = []
 var distant_stars = []
-var nebula_time = 0.0
 
 func _ready():
-	print(\"SpaceBackground: Script loaded!\")
-	# Use larger area for stars to cover any viewport size
 	var max_x = 2560.0
 	var max_y = 1440.0
-	# Create layered star field
-	# Distant tiny stars
-	for i in range(500):
+	for i in range(80):
 		distant_stars.append({
 			\"pos\": Vector2(randf() * max_x, randf() * max_y),
 			\"size\": randf_range(0.3, 1.0),
-			\"brightness\": randf_range(0.1, 0.4),
-			\"twinkle_speed\": randf_range(0.5, 2),
-			\"twinkle_offset\": randf() * TAU
+			\"brightness\": randf_range(0.2, 0.4)
 		})
-
-	# Closer brighter stars
-	for i in range(200):
+	for i in range(30):
 		stars.append({
 			\"pos\": Vector2(randf() * max_x, randf() * max_y),
 			\"size\": randf_range(1.0, 2.5),
 			\"brightness\": randf_range(0.5, 1.0),
-			\"twinkle_speed\": randf_range(1, 3),
-			\"twinkle_offset\": randf() * TAU,
 			\"color\": randf()
 		})
 	queue_redraw()
 
-func _process(delta):
-	nebula_time += delta * 0.3
-	queue_redraw()
-
 func _draw():
-	# Deep space background - dark blue gradient (cover full viewport)
 	var vp_size = get_viewport_rect().size
 	draw_rect(Rect2(-100, -100, vp_size.x + 200, vp_size.y + 200), Color(0.01, 0.02, 0.05))
 
-	# Subtle nebula layers
-	for i in range(12):
-		var nx = 200 + i * 160 + sin(nebula_time * 0.2 + i * 0.8) * 30
-		var ny = 150 + i * 80 + cos(nebula_time * 0.15 + i * 0.6) * 25
-		var nc = Color(0.03, 0.06, 0.12, 0.06)
-		draw_circle(Vector2(nx, ny), 200 + i * 25, nc)
+	for i in range(4):
+		var nx = 200 + i * 400
+		var ny = 150 + i * 200
+		draw_circle(Vector2(nx, ny), 220 + i * 25, Color(0.03, 0.06, 0.12, 0.06))
 
-	# Blue nebula highlights
-	for i in range(6):
-		var nx = 400 + i * 280
-		var ny = 300 + sin(i * 1.5) * 200
-		draw_circle(Vector2(nx, ny), 180, Color(0.05, 0.1, 0.2, 0.05))
-
-	var time = Time.get_ticks_msec() / 1000.0
-
-	# Draw distant stars
 	for star in distant_stars:
-		var twinkle = 0.7 + 0.3 * sin(time * star.twinkle_speed + star.twinkle_offset)
-		var alpha = star.brightness * twinkle
-		draw_circle(star.pos, star.size, Color(0.7, 0.8, 1.0, alpha))
+		draw_circle(star.pos, star.size, Color(0.7, 0.8, 1.0, star.brightness))
 
-	# Draw closer stars
 	for star in stars:
-		var twinkle = 0.6 + 0.4 * sin(time * star.twinkle_speed + star.twinkle_offset)
-		var alpha = star.brightness * twinkle
-		var c = get_star_color(star.color, alpha)
+		var c = get_star_color(star.color, star.brightness)
 		draw_circle(star.pos, star.size, c)
-		# Add glow to bright stars
 		if star.brightness > 0.7:
-			draw_circle(star.pos, star.size * 2, Color(c.r, c.g, c.b, alpha * 0.2))
+			draw_circle(star.pos, star.size * 2, Color(c.r, c.g, c.b, star.brightness * 0.2))
 
-	# Draw planet in corner
 	draw_planet(Vector2(1780, 920), 50)
-
-	# Small decorative elements like in reference
 	draw_circle(Vector2(1850, 1020), 4, Color(0.4, 0.6, 0.8, 0.6))
 	draw_circle(Vector2(1820, 1000), 3, Color(0.4, 0.6, 0.8, 0.4))
 
@@ -142,83 +105,71 @@ func get_star_color(val, alpha):
 		return Color(1.0, 0.9, 0.8, alpha)
 
 func draw_planet(pos, radius):
-	# Planet shadow/base
 	draw_circle(pos, radius + 2, Color(0.02, 0.03, 0.06, 0.8))
-	# Planet body
 	draw_circle(pos, radius, Color(0.12, 0.15, 0.22, 0.95))
-	# Surface detail
 	draw_circle(pos + Vector2(-radius*0.3, -radius*0.2), radius*0.4, Color(0.08, 0.1, 0.15, 0.5))
-	# Atmosphere rim light
 	draw_arc(pos, radius - 1, -0.8, 1.2, 24, Color(0.3, 0.45, 0.6, 0.4), 2.0)
-	# Glow
-	for i in range(4):
-		draw_circle(pos, radius + 4 + i * 3, Color(0.15, 0.25, 0.4, 0.03 - i * 0.007))
+	draw_circle(pos, radius + 7, Color(0.15, 0.25, 0.4, 0.025))
 "
 
 [sub_resource type="GDScript" id="portal_gd_script"]
 script/source = "extends Node2D
 
-var rotation_speed = 0.8  # Slower rotation for majestic feel
+var rotation_speed = 0.8
 var galaxy_rotation = 0.0
 var pulse = 0.0
 var is_hovered = false
 var click_scale = 1.0
-var click_rotation_boost = 0.0  # Extra rotation speed on click
+var click_rotation_boost = 0.0
 
-# Cosmic ring waves - each ring expands and fades independently
-var cosmic_rings = []  # Array of {life, max_life, start_size, color_type}
-var ring_cooldown = 0.0  # Timer to limit ring spawns to once per second
+var cosmic_rings = []
+var ring_cooldown = 0.0
 
-# Star data arrays
 var bulge_stars = []
 var disk_stars = []
 var arm_stars = []
 var bright_stars = []
 var nebulae = []
 
-# Click effect particles
-var click_particles = []
-var vortex_intensity = 0.0
+# Pre-rendered galaxy texture
+var galaxy_texture: ImageTexture
+var galaxy_sprite: Sprite2D
 
 signal portal_clicked
 
 func _ready():
-	print(\"Galaxy: Creating Milky Way...\")
 	create_galaxy()
+	_pre_render_galaxy()
 
 func create_galaxy():
 	var rng = RandomNumberGenerator.new()
-	rng.seed = 12345  # Consistent galaxy
+	rng.seed = 12345
 
-	# Central bulge stars (very dense, yellowish-orange)
-	for i in range(800):
+	for i in range(60):
 		var angle = rng.randf() * TAU
-		var dist = rng.randf() * rng.randf() * rng.randf() * 70  # More concentrated
+		var dist = rng.randf() * rng.randf() * rng.randf() * 70
 		bulge_stars.append({
 			\"angle\": angle,
 			\"dist\": dist,
 			\"size\": rng.randf_range(0.4, 2.5) * (1.0 - dist/90.0),
 			\"brightness\": rng.randf_range(0.6, 1.0),
-			\"temp\": rng.randf_range(0.0, 0.35)  # Warm colors
+			\"temp\": rng.randf_range(0.0, 0.35)
 		})
 
-	# Disk stars (spread throughout, dimmer)
-	for i in range(2000):
+	for i in range(150):
 		var angle = rng.randf() * TAU
 		var dist = 30 + rng.randf() * rng.randf() * 200
 		disk_stars.append({
 			\"angle\": angle,
 			\"dist\": dist,
-			\"size\": rng.randf_range(0.2, 1.0),
+			\"size\": rng.randf_range(0.3, 1.2),
 			\"brightness\": rng.randf_range(0.15, 0.5) * (1.0 - dist/280.0),
 			\"temp\": rng.randf()
 		})
 
-	# Spiral arm stars - 4 major arms (like Milky Way: Perseus, Sagittarius, Scutum-Centaurus, Norma)
 	for arm in range(4):
 		var arm_offset = arm * TAU / 4
-		# Main arm stars - denser
-		for i in range(600):
+		for i in range(50):
 			var t = rng.randf()
 			var spiral_angle = arm_offset + t * 2.8 + rng.randf_range(-0.15, 0.15)
 			var base_r = 30 + t * 200
@@ -229,12 +180,11 @@ func create_galaxy():
 					\"dist\": r,
 					\"size\": rng.randf_range(0.5, 2.2),
 					\"brightness\": rng.randf_range(0.5, 1.0) * (0.7 + 0.3 * (1.0 - t)),
-					\"temp\": rng.randf_range(0.4, 1.0),  # Bluer in arms
+					\"temp\": rng.randf_range(0.4, 1.0),
 					\"arm\": arm
 				})
-		# Minor arm between major arms
 		var minor_offset = arm_offset + TAU / 8
-		for i in range(200):
+		for i in range(15):
 			var t = rng.randf()
 			var spiral_angle = minor_offset + t * 2.5 + rng.randf_range(-0.2, 0.2)
 			var r = 50 + t * 160 + rng.randf_range(-20, 20)
@@ -248,8 +198,7 @@ func create_galaxy():
 					\"arm\": arm
 				})
 
-	# Bright blue giant stars and O/B type stars in arms
-	for i in range(120):
+	for i in range(15):
 		var arm = rng.randi() % 4
 		var arm_offset = arm * TAU / 4
 		var t = rng.randf_range(0.15, 0.85)
@@ -260,11 +209,10 @@ func create_galaxy():
 			\"dist\": r,
 			\"size\": rng.randf_range(1.8, 3.5),
 			\"brightness\": rng.randf_range(0.85, 1.0),
-			\"temp\": rng.randf_range(0.85, 1.0)  # Blue/blue-white
+			\"temp\": rng.randf_range(0.85, 1.0)
 		})
 
-	# Nebulae (star-forming regions in arms) - pink/red and blue
-	for i in range(25):
+	for i in range(6):
 		var arm = rng.randi() % 4
 		var arm_offset = arm * TAU / 4
 		var t = rng.randf_range(0.2, 0.8)
@@ -274,268 +222,212 @@ func create_galaxy():
 			\"angle\": spiral_angle,
 			\"dist\": r,
 			\"size\": rng.randf_range(15, 35),
-			\"color_type\": rng.randi() % 3  # 0=pink, 1=blue, 2=purple
+			\"color_type\": rng.randi() % 3
 		})
 
+func _pre_render_galaxy():
+	var tex_size = 600
+	var half = tex_size / 2.0
+	var img = Image.create(tex_size, tex_size, true, Image.FORMAT_RGBA8)
+
+	# Disk glow
+	for i in range(12):
+		var r = 240 - i * 18
+		var t = i / 12.0
+		var col = Color(0.12 + t * 0.5, 0.1 + t * 0.42, 0.22 - t * 0.12, 0.008 + t * 0.02)
+		_blit_circle(img, half, half, r, col)
+
+	# Nebulae
+	for neb in nebulae:
+		var px = half + cos(neb.angle) * neb.dist
+		var py = half + sin(neb.angle) * neb.dist
+		var c: Color
+		match neb.color_type:
+			0: c = Color(0.9, 0.4, 0.5, 0.07)
+			1: c = Color(0.4, 0.6, 0.9, 0.06)
+			_: c = Color(0.6, 0.4, 0.8, 0.05)
+		_blit_circle(img, px, py, neb.size, c)
+		_blit_circle(img, px, py, neb.size * 0.6, Color(c.r, c.g, c.b, c.a * 0.6))
+
+	# Spiral arm glow via dots along path
+	for arm in range(4):
+		var arm_offset = arm * TAU / 4
+		for si in range(30):
+			var t = si / 30.0
+			var angle = arm_offset + t * 2.8
+			var r = 25 + t * 210
+			var px = half + cos(angle) * r
+			var py = half + sin(angle) * r
+			var fade = sin(t * PI) * (1.0 - t * 0.25)
+			_blit_circle(img, px, py, 20, Color(0.35, 0.45, 0.7, 0.05 * fade))
+
+	# Disk stars
+	for star in disk_stars:
+		var px = half + cos(star.angle) * star.dist
+		var py = half + sin(star.angle) * star.dist
+		var c = get_star_color(star.temp, star.brightness)
+		_blit_circle(img, px, py, max(star.size, 0.8), c)
+
+	# Arm stars
+	for star in arm_stars:
+		var px = half + cos(star.angle) * star.dist
+		var py = half + sin(star.angle) * star.dist
+		var c = get_star_color(star.temp, star.brightness)
+		_blit_circle(img, px, py, max(star.size * 1.15, 0.8), c)
+
+	# Bright stars with glow
+	for star in bright_stars:
+		var px = half + cos(star.angle) * star.dist
+		var py = half + sin(star.angle) * star.dist
+		var a = star.brightness
+		_blit_circle(img, px, py, star.size * 2.5, Color(0.4, 0.6, 1.0, a * 0.2))
+		_blit_circle(img, px, py, star.size, Color(0.9, 0.95, 1.0, a))
+
+	# Bulge stars
+	for star in bulge_stars:
+		var px = half + cos(star.angle) * star.dist
+		var py = half + sin(star.angle) * star.dist
+		var c = get_star_color(star.temp, star.brightness)
+		_blit_circle(img, px, py, max(star.size, 0.8), c)
+
+	galaxy_texture = ImageTexture.create_from_image(img)
+	galaxy_sprite = Sprite2D.new()
+	galaxy_sprite.texture = galaxy_texture
+	galaxy_sprite.z_index = -1
+	add_child(galaxy_sprite)
+
+func _blit_circle(img: Image, cx: float, cy: float, radius: float, color: Color):
+	var w = img.get_width()
+	var h = img.get_height()
+	var r_ceil = int(ceil(radius)) + 1
+	var ix = int(round(cx))
+	var iy = int(round(cy))
+	for dy in range(-r_ceil, r_ceil + 1):
+		for dx in range(-r_ceil, r_ceil + 1):
+			var px = ix + dx
+			var py = iy + dy
+			if px < 0 or px >= w or py < 0 or py >= h:
+				continue
+			var dist = sqrt(float(dx * dx + dy * dy))
+			if dist > radius + 0.5:
+				continue
+			var edge = clampf(radius + 0.5 - dist, 0.0, 1.0)
+			var a = color.a * edge
+			if a < 0.002:
+				continue
+			var existing = img.get_pixel(px, py)
+			var out_a = a + existing.a * (1.0 - a)
+			if out_a > 0.001:
+				var inv = existing.a * (1.0 - a)
+				img.set_pixel(px, py, Color(
+					(color.r * a + existing.r * inv) / out_a,
+					(color.g * a + existing.g * inv) / out_a,
+					(color.b * a + existing.b * inv) / out_a,
+					out_a
+				))
+
 func _process(delta):
-	# Add click rotation boost to normal rotation (gentler boost)
 	galaxy_rotation += delta * (rotation_speed + click_rotation_boost)
 	pulse += delta * 1.5
 	click_scale = lerp(click_scale, 1.0 if not is_hovered else 1.03, delta * 6)
-
-	# Decay rotation boost smoothly
 	click_rotation_boost *= 0.97
 
-	# Update ring cooldown
 	if ring_cooldown > 0:
 		ring_cooldown -= delta
 
-	# Update cosmic rings - they expand and fade over time
-	var rings_to_remove = []
-	for i in range(cosmic_rings.size()):
+	# Update cosmic rings
+	var i = cosmic_rings.size() - 1
+	while i >= 0:
 		cosmic_rings[i].life -= delta
 		if cosmic_rings[i].life <= 0:
-			rings_to_remove.append(i)
-	# Remove expired rings (reverse order to maintain indices)
-	for i in range(rings_to_remove.size() - 1, -1, -1):
-		cosmic_rings.remove_at(rings_to_remove[i])
+			cosmic_rings.remove_at(i)
+		i -= 1
 
-	# Update click particles
-	var particles_to_remove = []
-	for i in range(click_particles.size()):
-		var p = click_particles[i]
-		p.life -= delta
-		p.pos += p.vel * delta
-		p.vel *= 0.96  # Slow down
-		p.size *= 0.97  # Shrink
-		if p.life <= 0:
-			particles_to_remove.append(i)
-
-	# Remove dead particles (in reverse order)
-	for i in range(particles_to_remove.size() - 1, -1, -1):
-		click_particles.remove_at(particles_to_remove[i])
-
-	# Decay vortex effect
-	vortex_intensity *= 0.92
+	# Rotate the pre-rendered galaxy sprite
+	if galaxy_sprite:
+		galaxy_sprite.rotation = galaxy_rotation * 0.0174533
+		galaxy_sprite.scale = Vector2(click_scale, click_scale)
 
 	queue_redraw()
 
 func _draw():
 	var center = Vector2.ZERO
 	var draw_scale = click_scale
-	var time = Time.get_ticks_msec() / 1000.0
 
-	# Outer halo (dark matter halo effect) - subtle blue glow
-	for i in range(30):
-		var alpha = 0.025 - i * 0.0008
-		var r = (250 + i * 12) * draw_scale
+	# Outer halo - reduced layers
+	for i in range(8):
+		var alpha = 0.025 - i * 0.003
+		var r = (250 + i * 40) * draw_scale
 		draw_circle(center, r, Color(0.08, 0.12, 0.22, alpha))
 
-	draw_set_transform(center, galaxy_rotation * 0.0174533, Vector2(draw_scale, draw_scale))
-
-	# Galaxy disk glow - gradient from blue edge to yellow center
-	for i in range(50):
-		var r = 240 - i * 4.5
-		var t = i / 50.0
-		var red = 0.12 + t * 0.5
-		var green = 0.1 + t * 0.42
-		var blue = 0.22 - t * 0.12
-		var alpha = 0.006 + t * 0.018
-		draw_circle(Vector2.ZERO, r, Color(red, green, blue, alpha))
-
-	# Draw nebulae first (behind stars)
-	for neb in nebulae:
-		var pos = Vector2(cos(neb.angle), sin(neb.angle)) * neb.dist
-		var neb_pulse = 0.85 + 0.15 * sin(time * 0.5 + neb.angle * 2)
-		var c: Color
-		match neb.color_type:
-			0: c = Color(0.9, 0.4, 0.5, 0.08 * neb_pulse)  # Pink/red
-			1: c = Color(0.4, 0.6, 0.9, 0.07 * neb_pulse)  # Blue
-			2: c = Color(0.6, 0.4, 0.8, 0.06 * neb_pulse)  # Purple
-		for j in range(4):
-			draw_circle(pos, neb.size * (1.0 - j * 0.2), Color(c.r, c.g, c.b, c.a * (1.0 - j * 0.25)))
-
-	# Draw spiral arms as glowing regions - multiple layers
-	for arm in range(4):
-		var arm_offset = arm * TAU / 4
-		# Dark dust lanes between arms (subtle)
-		draw_spiral_arm(arm_offset - 0.2, Color(0.02, 0.02, 0.04, 0.15), 40)
-		# Bright arm core
-		draw_spiral_arm(arm_offset, Color(0.35, 0.45, 0.7, 0.12), 45)
-		draw_spiral_arm(arm_offset + 0.03, Color(0.45, 0.55, 0.8, 0.08), 30)
-		draw_spiral_arm(arm_offset + 0.06, Color(0.55, 0.65, 0.9, 0.05), 18)
-
-	# Draw disk stars (background)
-	for star in disk_stars:
-		var twinkle = 0.75 + 0.25 * sin(time * 2.0 + star.angle * 4)
-		var pos = Vector2(cos(star.angle), sin(star.angle)) * star.dist
-		var c = get_star_color(star.temp, star.brightness * twinkle)
-		draw_circle(pos, star.size, c)
-
-	# Draw arm stars (brighter, more prominent)
-	for star in arm_stars:
-		var twinkle = 0.7 + 0.3 * sin(time * 2.5 + star.dist * 0.04)
-		var pos = Vector2(cos(star.angle), sin(star.angle)) * star.dist
-		var c = get_star_color(star.temp, star.brightness * twinkle)
-		draw_circle(pos, star.size * 1.15, c)
-
-	# Draw bright blue giants with glow halos
-	for star in bright_stars:
-		var twinkle = 0.75 + 0.25 * sin(time * 3.5 + star.angle * 3)
-		var pos = Vector2(cos(star.angle), sin(star.angle)) * star.dist
-		var alpha = star.brightness * twinkle
-		# Outer glow
-		draw_circle(pos, star.size * 3.0, Color(0.3, 0.5, 1.0, alpha * 0.12))
-		draw_circle(pos, star.size * 2.0, Color(0.5, 0.7, 1.0, alpha * 0.25))
-		draw_circle(pos, star.size * 1.3, Color(0.7, 0.85, 1.0, alpha * 0.5))
-		draw_circle(pos, star.size, Color(0.9, 0.95, 1.0, alpha))
-
-	# Draw bulge stars (on top, warm colors)
-	for star in bulge_stars:
-		var twinkle = 0.85 + 0.15 * sin(time * 1.8 + star.angle * 5)
-		var pos = Vector2(cos(star.angle), sin(star.angle)) * star.dist
-		var c = get_star_color(star.temp, star.brightness * twinkle)
-		draw_circle(pos, star.size, c)
-
-	draw_set_transform(Vector2.ZERO, 0, Vector2.ONE)
-
-	# Galactic core - bright, pulsing center
+	# Galactic core pulse
 	var core_pulse = 1.0 + sin(pulse) * 0.06
 
-	# Outer warm glow (orange-yellow)
-	for i in range(25):
-		var r = (65 - i * 2.2) * core_pulse * draw_scale
-		var t = i / 25.0
-		var alpha = 0.025 + t * 0.045
-		draw_circle(center, r, Color(0.95, 0.7, 0.35, alpha))
+	for i in range(8):
+		var r = (65 - i * 7) * core_pulse * draw_scale
+		var t = i / 8.0
+		draw_circle(center, r, Color(0.95, 0.7, 0.35, 0.025 + t * 0.05))
 
-	# Middle bright glow (yellow-white)
-	for i in range(15):
-		var r = (38 - i * 2) * core_pulse * draw_scale
-		var alpha = 0.08 + i * 0.055
-		draw_circle(center, r, Color(1.0, 0.9, 0.65, alpha))
+	for i in range(5):
+		var r = (38 - i * 6) * core_pulse * draw_scale
+		draw_circle(center, r, Color(1.0, 0.9, 0.65, 0.08 + i * 0.08))
 
-	# Inner core (white-yellow)
-	for i in range(10):
-		var r = (18 - i * 1.5) * core_pulse * draw_scale
-		var alpha = 0.25 + i * 0.08
-		draw_circle(center, r, Color(1.0, 0.96, 0.85, alpha))
+	for i in range(4):
+		var r = (18 - i * 4) * core_pulse * draw_scale
+		draw_circle(center, r, Color(1.0, 0.96, 0.85, 0.25 + i * 0.15))
 
-	# Bright center point
 	draw_circle(center, 6 * draw_scale, Color(1.0, 0.98, 0.92, 0.95))
 	draw_circle(center, 3 * draw_scale, Color(1, 1, 0.98, 1))
 
-	# Draw cosmic ring waves - smooth expanding rings
+	# Cosmic ring waves
 	for ring in cosmic_rings:
-		var progress = 1.0 - (ring.life / ring.max_life)  # 0 to 1 as ring expands
+		var progress = 1.0 - (ring.life / ring.max_life)
 		var ring_size = lerp(ring.start_size, ring.end_size, ease(progress, 0.5))
-		# Fade out smoothly - strongest in middle of life, fades at end
 		var alpha = sin(progress * PI) * 0.7
-
-		# Ring color based on type
 		var ring_color: Color
 		match ring.color_type:
-			0: ring_color = Color(0.7, 0.4, 1.0, alpha)   # Purple
-			1: ring_color = Color(0.4, 0.8, 1.0, alpha)   # Cyan
-			2: ring_color = Color(1.0, 0.8, 0.4, alpha)   # Gold
-
-		# Ring gets thinner as it expands (starts at 4, goes to 0.5)
+			0: ring_color = Color(0.7, 0.4, 1.0, alpha)
+			1: ring_color = Color(0.4, 0.8, 1.0, alpha)
+			2: ring_color = Color(1.0, 0.8, 0.4, alpha)
 		var ring_width = lerp(4.0, 0.5, progress)
-		draw_arc(center, ring_size * draw_scale, 0, TAU, 64, ring_color, ring_width)
-		# Outer glow also gets thinner
-		var glow_width = lerp(6.0, 1.0, progress)
-		var glow_color = Color(ring_color.r, ring_color.g, ring_color.b, alpha * 0.3)
-		draw_arc(center, (ring_size + 3) * draw_scale, 0, TAU, 64, glow_color, glow_width)
-
-	# Particles removed - keeping just the cosmic rings
-
-func draw_spiral_arm(start_angle, color, width):
-	var points = PackedVector2Array()
-	var colors = PackedColorArray()
-	var segments = 70
-
-	for i in range(segments + 1):
-		var t = i / float(segments)
-		var angle = start_angle + t * 2.8
-		var r = 25 + t * 210
-		points.append(Vector2(cos(angle) * r, sin(angle) * r))
-		var fade = sin(t * PI) * (1.0 - t * 0.25)
-		colors.append(Color(color.r, color.g, color.b, color.a * fade))
-
-	if points.size() > 1:
-		draw_polyline_colors(points, colors, width)
+		draw_arc(center, ring_size * draw_scale, 0, TAU, 32, ring_color, ring_width)
 
 func get_star_color(temp, alpha):
-	# temp: 0 = red/orange (cool M type), 1 = blue (hot O/B type)
 	if temp < 0.15:
-		return Color(1.0, 0.75, 0.5, alpha)   # Orange (K type)
+		return Color(1.0, 0.75, 0.5, alpha)
 	elif temp < 0.3:
-		return Color(1.0, 0.88, 0.65, alpha)  # Yellow-orange (G type)
+		return Color(1.0, 0.88, 0.65, alpha)
 	elif temp < 0.5:
-		return Color(1.0, 0.98, 0.85, alpha)  # Yellow-white (F type)
+		return Color(1.0, 0.98, 0.85, alpha)
 	elif temp < 0.7:
-		return Color(1.0, 1.0, 1.0, alpha)    # White (A type)
+		return Color(1.0, 1.0, 1.0, alpha)
 	elif temp < 0.85:
-		return Color(0.85, 0.92, 1.0, alpha)  # Blue-white (B type)
+		return Color(0.85, 0.92, 1.0, alpha)
 	else:
-		return Color(0.65, 0.8, 1.0, alpha)   # Blue (O type)
+		return Color(0.65, 0.8, 1.0, alpha)
 
 func _on_click_area_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			click_scale = 0.96  # Very gentle squeeze on click
-			click_rotation_boost += 0.25  # Very subtle spin boost
-			# Only spawn a ring once per second
+			click_scale = 0.96
+			click_rotation_boost += 0.25
 			if ring_cooldown <= 0:
 				spawn_cosmic_ring()
-				ring_cooldown = 1.0  # 1 second cooldown
+				ring_cooldown = 1.0
 			emit_signal(\"portal_clicked\")
 			var gm = get_node_or_null(\"/root/GameManager\")
 			if gm:
 				gm.process_click()
 
 func spawn_cosmic_ring():
-	# Spawn a new cosmic ring wave that will expand outward
 	var ring = {
-		\"life\": 1.8,  # How long the ring lasts
+		\"life\": 1.8,
 		\"max_life\": 1.8,
-		\"start_size\": 20.0,  # Starting radius
-		\"end_size\": 300.0,  # Ending radius
-		\"color_type\": randi() % 3  # 0=purple, 1=cyan, 2=gold
+		\"start_size\": 20.0,
+		\"end_size\": 300.0,
+		\"color_type\": randi() % 3
 	}
 	cosmic_rings.append(ring)
-
-func spawn_click_effect():
-	# Trigger vortex pulse
-	vortex_intensity = 0.6  # Reduced vortex intensity
-
-	# Spawn star burst particles
-	var num_particles = randi_range(12, 20)
-	for i in range(num_particles):
-		var angle = randf() * TAU
-		var speed = randf_range(150, 350)
-		var particle = {
-			\"pos\": Vector2.ZERO,
-			\"vel\": Vector2(cos(angle), sin(angle)) * speed,
-			\"size\": randf_range(2, 5),
-			\"life\": randf_range(0.4, 0.8),
-			\"color_type\": randi() % 4  # 0=white, 1=yellow, 2=cyan, 3=purple
-		}
-		click_particles.append(particle)
-
-	# Add some inner spiral particles
-	for i in range(8):
-		var angle = randf() * TAU
-		var dist = randf_range(20, 60)
-		var speed = randf_range(50, 120)
-		var particle = {
-			\"pos\": Vector2(cos(angle), sin(angle)) * dist,
-			\"vel\": Vector2(cos(angle + 1.5), sin(angle + 1.5)) * speed,
-			\"size\": randf_range(1.5, 3),
-			\"life\": randf_range(0.3, 0.5),
-			\"color_type\": 1  # Yellow/gold
-		}
-		click_particles.append(particle)
 
 func _on_click_area_mouse_entered():
 	is_hovered = true
@@ -555,23 +447,14 @@ script/source = "extends Node2D
 # This script connects the GDScript portal to the C# GameManager
 
 func _ready():
-	print(\"ClickConnector: Initializing...\")
 	var portal = get_node_or_null(\"../PortalVisual\")
 	if portal:
 		portal.connect(\"portal_clicked\", _on_portal_clicked)
-		print(\"ClickConnector: Connected to portal signal\")
-	else:
-		print(\"ClickConnector: ERROR - Could not find PortalVisual!\")
 
 func _on_portal_clicked():
-	print(\"ClickConnector: Portal clicked!\")
-	# Call the C# GameManager to process the click
 	var game_manager = get_node_or_null(\"/root/GameManager\")
 	if game_manager:
-		print(\"ClickConnector: Found GameManager, calling ProcessClick\")
 		game_manager.call(\"ProcessClick\")
-	else:
-		print(\"ClickConnector: ERROR - GameManager not found!\")
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_topbar"]

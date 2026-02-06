@@ -96,7 +96,7 @@ var frenzy_time_remaining: float:
 
 
 func _ready() -> void:
-	print("GameManager: Initialized successfully")
+	pass
 
 
 func _process(delta: float) -> void:
@@ -223,40 +223,40 @@ func increase_max_cps(amount: int) -> void:
 
 func add_prestige_starting_energy(amount: float) -> void:
 	prestige_starting_energy += amount
-	print("Prestige: Starting energy bonus increased to %s" % prestige_starting_energy)
+	pass
 
 
 func add_star_dust_multiplier(multiplier: float) -> void:
 	star_dust_multiplier += multiplier
-	print("Prestige: Star Dust multiplier increased to %.0f%%" % (star_dust_multiplier * 100))
+	pass
 
 
 func add_base_crit_chance(chance: float) -> void:
 	base_crit_chance += chance
 	base_crit_chance = minf(base_crit_chance, 1.0)
-	print("Prestige: Base crit chance increased to %.0f%%" % (base_crit_chance * 100))
+	pass
 
 
 func add_ability_cooldown_reduction(reduction: float) -> void:
 	ability_cooldown_reduction += reduction
 	ability_cooldown_reduction = minf(ability_cooldown_reduction, 0.90)
-	print("Prestige: Ability cooldown reduction increased to %.0f%%" % (ability_cooldown_reduction * 100))
+	pass
 
 
 func add_ability_duration_bonus(bonus: float) -> void:
 	ability_duration_bonus += bonus
-	print("Prestige: Ability duration bonus increased to %.0f%%" % (ability_duration_bonus * 100))
+	pass
 
 
 func add_ability_power_bonus(bonus: float) -> void:
 	ability_power_bonus += bonus
-	print("Prestige: Ability power bonus increased to %.0f%%" % (ability_power_bonus * 100))
+	pass
 
 
 func add_generator_discount(discount: float) -> void:
 	generator_discount += discount
 	generator_discount = minf(generator_discount, 0.90)
-	print("Prestige: Generator discount increased to %.0f%%" % (generator_discount * 100))
+	pass
 
 
 func get_effective_ability_cooldown() -> float:
@@ -291,7 +291,7 @@ func _update_frenzy_state(delta: float) -> void:
 				_frenzy_duration_timer = 10.0
 				frenzy_state_changed.emit(true, frenzy_multiplier)
 				click_power_changed.emit(effective_click_power.to_formatted_string())
-				print("Cosmic Surge upgraded to x%s!" % frenzy_multiplier)
+				pass
 			else:
 				_frenzy_duration_timer = maxf(_frenzy_duration_timer, 5.0)
 	else:
@@ -306,7 +306,7 @@ func _activate_frenzy(multiplier: float = 2.0) -> void:
 	frenzy_state_changed.emit(true, frenzy_multiplier)
 	click_power_changed.emit(effective_click_power.to_formatted_string())
 
-	print("Cosmic Surge activated! x%s multiplier for 10 seconds!" % multiplier)
+	pass
 
 
 func _end_frenzy() -> void:
@@ -317,7 +317,7 @@ func _end_frenzy() -> void:
 	frenzy_state_changed.emit(false, 1.0)
 	click_power_changed.emit(effective_click_power.to_formatted_string())
 
-	print("Cosmic Surge ended.")
+	pass
 
 
 func boost_frenzy(boost: float) -> void:
@@ -330,7 +330,7 @@ func boost_frenzy(boost: float) -> void:
 
 		frenzy_state_changed.emit(true, frenzy_multiplier)
 		click_power_changed.emit(effective_click_power.to_formatted_string())
-		print("Cosmic Surge boosted to x%.2f! Timer refreshed to 10s" % frenzy_multiplier)
+		pass
 	else:
 		is_frenzy_active = true
 		frenzy_multiplier = 1.0 + boost
@@ -341,7 +341,7 @@ func boost_frenzy(boost: float) -> void:
 
 		frenzy_state_changed.emit(true, frenzy_multiplier)
 		click_power_changed.emit(effective_click_power.to_formatted_string())
-		print("Cosmic Surge started at x%.2f! Duration: 10s" % frenzy_multiplier)
+		pass
 
 
 func apply_temporary_multiplier(multiplier: float, duration: float, source: String = "Bonus") -> void:
@@ -357,7 +357,7 @@ func apply_temporary_crit_boost(bonus_chance: float, duration: float) -> void:
 	else:
 		ability_crit_multiplier = new_multiplier
 		_crit_boost_timer = duration
-	print("Crit boost: %.0f%% extra chance for %ss (total multiplier: x%.1f)" % [bonus_chance * 100, duration, ability_crit_multiplier])
+	pass
 
 
 func get_effective_crit_chance() -> float:
@@ -371,7 +371,7 @@ func activate_multiplier(ability_id: String, multiplier: float, duration: float,
 	_ability_timers[ability_id] = duration
 	_ability_passive_only[ability_id] = passive_only
 
-	print("Ability %s activated: x%s for %ss" % [ability_id, multiplier, duration])
+	pass
 
 	click_power_changed.emit(effective_click_power.to_formatted_string())
 	passive_income_changed.emit(effective_passive_income.to_formatted_string())
@@ -383,7 +383,7 @@ func deactivate_multiplier(ability_id: String) -> void:
 		_ability_timers.erase(ability_id)
 		_ability_passive_only.erase(ability_id)
 
-		print("Ability %s deactivated" % ability_id)
+		pass
 
 		click_power_changed.emit(effective_click_power.to_formatted_string())
 		passive_income_changed.emit(effective_passive_income.to_formatted_string())
@@ -392,7 +392,7 @@ func deactivate_multiplier(ability_id: String) -> void:
 func activate_crit_boost(multiplier: float, duration: float) -> void:
 	ability_crit_multiplier = multiplier
 	_crit_boost_timer = duration
-	print("Crit boost activated: x%s crit chance for %ss" % [multiplier, duration])
+	pass
 
 
 func _update_ability_timers(delta: float) -> void:
@@ -409,7 +409,7 @@ func _update_ability_timers(delta: float) -> void:
 		_crit_boost_timer -= delta
 		if _crit_boost_timer <= 0:
 			ability_crit_multiplier = 1.0
-			print("Crit boost ended")
+			pass
 
 
 func _get_ability_click_multiplier() -> float:
@@ -449,11 +449,11 @@ func perform_prestige() -> bool:
 
 	if prestige_starting_energy > 0:
 		void_energy = BigNumber.new(prestige_starting_energy)
-		print("Applied prestige starting energy: %s" % void_energy.to_formatted_string())
+		pass
 
 	prestige_performed.emit("")
 
-	print("Galaxy Reset complete! Prestige count: %d" % prestige_count)
+	pass
 	return true
 
 
@@ -539,7 +539,7 @@ func calculate_offline_progress() -> void:
 	if seconds_away > 60 and not base_passive_income.is_zero:
 		var offline_earnings := effective_passive_income.multiply(seconds_away * 0.5)
 		add_void_energy(offline_earnings, true)
-		print("Welcome back! Earned %s while away." % offline_earnings.to_formatted_string())
+		pass
 
 
 # Dev/Debug Methods
@@ -584,4 +584,4 @@ func reset_all_progress() -> void:
 	passive_income_changed.emit(effective_passive_income.to_formatted_string())
 	frenzy_state_changed.emit(false, 1.0)
 
-	print("GameManager: All progress reset!")
+	pass
